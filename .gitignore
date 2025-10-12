@@ -1,0 +1,8 @@
+# environment package
+myenv/
+
+# pycache files
+__pycache__/
+
+# ds store
+.DS_Store/
