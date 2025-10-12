@@ -10,3 +10,5 @@ shap==0.48.0
 tensorflow==2.20.0
 tomli==2.0.1
 xgboost==3.0.5
+transformers==4.57.0
+tiktoken==0.12.0
