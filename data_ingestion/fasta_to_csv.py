@@ -22,7 +22,7 @@ def convert_to_csv(input_file, output_file):
 
     with open(output_file, "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["epitope_name", "label"])
+        writer.writerow(["peptide_name", "label"])
         writer.writerows(data)
 
 input_dir = 'data/data_fasta'

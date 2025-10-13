@@ -38,7 +38,7 @@ class FeatureScaling:
         def encode_features(df):
             encoded_list = []
             for _, row in df.iterrows():
-                feature_developer = FeatureDevelopment(row['epitope_name'])
+                feature_developer = FeatureDevelopment(row['peptide_name'])
                 features = []
                 if "APAAC" in self.feature_types:
                     features.append(feature_developer.APAAC())

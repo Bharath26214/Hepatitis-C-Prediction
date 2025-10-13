@@ -7,7 +7,7 @@ class Kmer:
     def encode_features(self):
         self.kmer_features = []
         for _, row in self.data.iterrows():  
-            seq = row["epitope_name"] 
+            seq = row["peptide_name"] 
             kmers = [seq[j:j+self.k] for j in range(len(seq) - self.k + 1)]
             
             self.kmer_features.append(kmers)
