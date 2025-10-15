@@ -22,7 +22,6 @@ class FeatureScaling:
         std = np.std(features, axis=0)
         return (features - mean) / (std + epsilon)
 
-
     # mRMR
     def mRMR(self, X, y, fit=True):
         if not isinstance(X, pd.DataFrame):

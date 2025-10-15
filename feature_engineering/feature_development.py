@@ -38,40 +38,44 @@ class FeatureDevelopment:
 
     return AAC_vector
 
-  def PAAC(self,lam=3, w=0.05):
-    aac_freq = self.AAC()
+  def PAAC(self, lam=3, w=0.05):
+        """Deterministic PAAC"""
+        aac_freq = self.AAC()
+        L = self.length
+        theta = []
 
-    PAAC_vector = []
+        for l in range(1, lam + 1):
+            val = 0.0
+            for i in range(L - l):
+                aa1, aa2 = self.seq[i], self.seq[i + l]
+                if aa1 in self.hydrophobicity and aa2 in self.hydrophobicity:
+                    val += (self.hydrophobicity[aa1] - self.hydrophobicity[aa2]) ** 2
+            val /= (L - l)
+            theta.append(val)
 
-    theta = []
-    for l in range(1, lam+1):
-        val = 0
-        for i in range(self.length-l):
-            val += (self.hydrophobicity[self.seq[i]] - self.hydrophobicity[self.seq[i+l]])**2
-        val /= (self.length-l)
-        theta.append(val)
-    PAAC_vector = np.concatenate([aac_freq, w*np.array(theta)])
-    return PAAC_vector
+        denom = 1 + w * sum(theta)
+        return np.concatenate([aac_freq / denom, (w * np.array(theta)) / denom])
 
-  def APAAC(self, lamda=6, w=0.05):
-    L = len(self.seq)
-    aa_freq = self.AAC()
+  def APAAC(self, lam=3, w=0.05):
+      """Deterministic APAAC"""
+      aa_freq = self.AAC()
+      L = self.length
+      theta = []
 
-    theta = []
-    for l in range(1, lamda+1):
-        corr = 0
-        for i in range(L - l):
-            h1 = self.hydrophobicity[self.seq[i]]
-            h2 = self.hydrophobicity[self.seq[i+l]]
-            p1 = self.hydrophilicity[self.seq[i]]
-            p2 = self.hydrophilicity[self.seq[i+l]]
-            corr += ((h1 - h2)**2 + (p1 - p2)**2) / 2
-        corr /= (self.length - l)
-        theta.append(corr)
+      for l in range(1, lam + 1):
+          corr = 0.0
+          for i in range(L - l):
+              aa1, aa2 = self.seq[i], self.seq[i + l]
+              if (aa1 in self.hydrophobicity and aa2 in self.hydrophobicity and
+                  aa1 in self.hydrophilicity and aa2 in self.hydrophilicity):
+                  h1, h2 = self.hydrophobicity[aa1], self.hydrophobicity[aa2]
+                  p1, p2 = self.hydrophilicity[aa1], self.hydrophilicity[aa2]
+                  corr += ((h1 - h2) ** 2 + (p1 - p2) ** 2) / 2
+          corr /= (L - l)
+          theta.append(corr)
 
-    factor = 1 + w * sum(theta)
-    APAAC_vector = np.concatenate([aa_freq / factor, (w * np.array(theta)) / factor])
-    return APAAC_vector
+      denom = 1 + w * sum(theta)
+      return np.concatenate([aa_freq / denom, (w * np.array(theta)) / denom])
 
   # Global Sequence Encodings
   def DPC(self):
