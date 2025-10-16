@@ -11,7 +11,6 @@ from sklearn.neighbors import KNeighborsClassifier
 from xgboost import XGBClassifier
 from sklearn.model_selection import StratifiedKFold
 import pandas as pd
-import numpy as np
 
 rare_aas = 'UOZB'
 train_df['peptide_name'] = train_df['peptide_name'].str.upper().replace("UOZB", "X", regex=True)

@@ -1,2 +1,2 @@
 Fold,Accuracy,Sensitivity,Specificity,AUC,MCC
-Test,0.7216,0.7079,0.7333,0.7865,0.4405
+Test,0.6907,0.6966,0.6857,0.7116,0.3811
