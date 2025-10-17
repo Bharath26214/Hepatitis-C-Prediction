@@ -8,18 +8,11 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 class ProtT5EmbedderCPU:
     def __init__(self, model_name="Rostlab/prot_t5_xl_bfd"):
-        """
-        Initialize the ProtT5 model and tokenizer on CPU.
-        """
         self.model_name = model_name
         self.tokenizer = AutoTokenizer.from_pretrained(model_name, do_lower_case=False)
         self.model = TFAutoModel.from_pretrained(model_name)
 
     def embed_sequences(self, sequences, max_length=1024):
-        """
-        Convert a list of protein sequences into embeddings.
-        Returns a numpy array of shape (num_sequences, embedding_dim).
-        """
         embeddings = []
         for seq in sequences:
             # Preprocess sequence
@@ -35,9 +28,6 @@ class ProtT5EmbedderCPU:
         
         return np.array(embeddings)
 
-# =========================
-# Example usage
-# =========================
 if __name__ == "__main__":
     sequences = ["MEEPQSDPSV", "GAVLILLLV"]
     embedder = ProtT5EmbedderCPU()
