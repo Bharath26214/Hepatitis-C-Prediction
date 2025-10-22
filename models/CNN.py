@@ -4,7 +4,6 @@ from tensorflow.keras.initializers import GlorotUniform
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 import numpy as np
 
-
 class CNN:
     def __init__(
         self,
@@ -114,7 +113,7 @@ class CNN:
             verbose=verbose
         )
         return history
-
+ 
     def evaluate(self, X_test, y_test, batch_size=32):
         return self.model.evaluate(X_test, y_test, batch_size=batch_size, verbose=1)
 
