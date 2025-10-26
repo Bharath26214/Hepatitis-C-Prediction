@@ -4,7 +4,6 @@ from feature_engineering.feature_scaling import FeatureScaling
 from sklearn.metrics import accuracy_score, confusion_matrix, roc_auc_score, matthews_corrcoef
 from models.LSTM import AttLSTM
 from tensorflow.keras.callbacks import EarlyStopping
-from models.CNN import CNN
 
 import pandas as pd
 import numpy as np

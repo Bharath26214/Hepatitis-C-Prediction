@@ -3,6 +3,7 @@ from tensorflow.keras import layers, Model, Input
 from tensorflow.keras.initializers import GlorotUniform
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 import numpy as np
+import os
 
 class CNN:
     def __init__(
@@ -95,12 +96,31 @@ class CNN:
         batch_size=32,
         early_stopping=False,
         patience=10,
-        verbose=1
+        verbose=1,
+        model_dir="results"
     ):
-        callbacks = []
+        os.makedirs(model_dir, exist_ok=True)
+        best_model_path = os.path.join(model_dir, "best_model.h5")
+
+        callbacks = [
+            ModelCheckpoint(
+                best_model_path,
+                monitor="val_accuracy",  # ✅ track validation accuracy
+                mode="max",
+                save_best_only=True,
+                verbose=1
+            )
+        ]
+
         if early_stopping and X_val is not None:
             callbacks.append(
-                EarlyStopping(monitor="val_auc", mode="max", patience=patience, restore_best_weights=True, verbose=1)
+                EarlyStopping(
+                    monitor="val_accuracy",
+                    mode="max",
+                    patience=patience,
+                    restore_best_weights=True,
+                    verbose=1
+                )
             )
 
         history = self.model.fit(
@@ -112,8 +132,23 @@ class CNN:
             callbacks=callbacks,
             verbose=verbose
         )
-        return history
- 
+
+        # --- Retrieve best epoch ---
+        best_epoch = np.argmax(history.history["val_accuracy"]) + 1
+        best_val_acc = max(history.history["val_accuracy"])
+
+        # Load best weights
+        self.model.load_weights(best_model_path)
+
+        print(f"\n✅ Best Epoch: {best_epoch} | Best Validation Accuracy: {best_val_acc:.4f}")
+
+        return {
+            "history": history.history,
+            "best_epoch": best_epoch,
+            "best_val_acc": best_val_acc,
+            "best_model_path": best_model_path
+        }
+
     def evaluate(self, X_test, y_test, batch_size=32):
         return self.model.evaluate(X_test, y_test, batch_size=batch_size, verbose=1)
 
@@ -128,5 +163,3 @@ class CNN:
 
     def load_weights(self, path):
         self.model.load_weights(path)
-
-

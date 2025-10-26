@@ -12,3 +12,6 @@ test_df = pd.concat(
      test_df['label'].reset_index(drop=True)],
     axis=1
 )
+
+train_df.to_csv('train_df.csv', index=False)
+test_df.to_csv('test_df.csv', index=False)
