@@ -69,5 +69,5 @@ results = {
     "MCC": round(mcc, 4)
 }
 
-lstm_results = pd.DataFrame([results]).to_csv('results/cnn/cnn_protT5.csv', index=False)
+cnn_results = pd.DataFrame([results]).to_csv('results/cnn/cnn_protT5.csv', index=False)
 
